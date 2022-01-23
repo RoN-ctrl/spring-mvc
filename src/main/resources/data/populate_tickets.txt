@@ -1,0 +1,2 @@
+event_id:1,user_id:1,category:STANDARD,place:14
+event_id:2,user_id:2,category:STANDARD,place:18
