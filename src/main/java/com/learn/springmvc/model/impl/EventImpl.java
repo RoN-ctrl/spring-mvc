@@ -48,4 +48,13 @@ public class EventImpl implements Event {
   public void setDate(Date date) {
     this.date = date;
   }
+
+  @Override
+  public String toString() {
+    return "Event{" +
+        "id=" + id +
+        ", title='" + title + '\'' +
+        ", date=" + date +
+        '}';
+  }
 }

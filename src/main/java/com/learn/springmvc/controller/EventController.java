@@ -1,5 +1,7 @@
 package com.learn.springmvc.controller;
 
+import static com.learn.springmvc.util.ControllerUtils.getModelAndView;
+
 import com.learn.springmvc.facade.BookingFacade;
 import com.learn.springmvc.model.Event;
 import java.util.Date;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class EventController {
 
   public static final String EVENT_MODEL = "eventModel";
+  public static final String EVENT_PAGE = "eventPage";
   private final BookingFacade bookingFacade;
 
   public EventController(BookingFacade bookingFacade) {
@@ -31,7 +34,7 @@ public class EventController {
   @GetMapping("/getById/{id}")
   public ModelAndView getEventById(@PathVariable long id) {
 
-    var modelAndView = getModelAndView();
+    var modelAndView = getModelAndView(EVENT_PAGE);
     var event = bookingFacade.getEventById(id);
     if (Objects.nonNull(event)) {
       modelAndView.addObject(EVENT_MODEL, event);
@@ -47,7 +50,7 @@ public class EventController {
       @RequestParam(required = false, defaultValue = "25") int pageSize,
       @RequestParam(required = false, defaultValue = "1") int pageNum) {
 
-    var modelAndView = getModelAndView();
+    var modelAndView = getModelAndView(EVENT_PAGE);
     List<Event> events = bookingFacade.getEventsByTitle(title, pageSize, pageNum);
     modelAndView.addObject(EVENT_MODEL, events);
     return modelAndView;
@@ -58,18 +61,20 @@ public class EventController {
       @RequestParam(required = false, defaultValue = "25") int pageSize,
       @RequestParam(required = false, defaultValue = "1") int pageNum) {
 
-    var modelAndView = getModelAndView();
+    var modelAndView = getModelAndView(EVENT_PAGE);
     List<Event> events = bookingFacade.getEventsForDay(day, pageSize, pageNum);
     modelAndView.addObject(EVENT_MODEL, events);
     return modelAndView;
   }
 
   @PostMapping("/create")
-  public ResponseEntity<HttpStatus> createEvent(@RequestParam String title,
+  public ModelAndView createEvent(@RequestParam String title,
       @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
 
-    bookingFacade.createEvent(title, date);
-    return ResponseEntity.ok(HttpStatus.CREATED);
+    var modelAndView = getModelAndView(EVENT_PAGE);
+    var event = bookingFacade.createEvent(title, date);
+    modelAndView.addObject(EVENT_MODEL, "CREATED " + event);
+    return modelAndView;
   }
 
   @PostMapping("/update/{id}")
@@ -77,25 +82,16 @@ public class EventController {
       @RequestParam String title,
       @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
 
-    bookingFacade.updateEvent(id, title, date);
+    var modelAndView = getModelAndView(EVENT_PAGE);
+    var event = bookingFacade.updateEvent(id, title, date);
+    modelAndView.addObject(EVENT_MODEL, "UPDATED " + event);
     return ResponseEntity.ok(HttpStatus.OK);
   }
 
   @DeleteMapping("/delete/{id}")
-  public ModelAndView deleteEvent(@PathVariable long id) {
+  public ResponseEntity<HttpStatus> deleteEvent(@PathVariable long id) {
 
-    var modelAndView = getModelAndView();
-    var isDeleted = bookingFacade.deleteEvent(id);
-    if (isDeleted) {
-      modelAndView.addObject(EVENT_MODEL, "Event id=" + id + " deleted successfully");
-    } else {
-      modelAndView.addObject(EVENT_MODEL, "Event id=" + id + " not found");
-    }
-
-    return modelAndView;
-  }
-
-  private ModelAndView getModelAndView() {
-    return new ModelAndView("eventPage");
+    bookingFacade.deleteEvent(id);
+    return new ResponseEntity("DELETED", HttpStatus.OK);
   }
 }

@@ -1,5 +1,7 @@
 package com.learn.springmvc.controller;
 
+import static com.learn.springmvc.util.ControllerUtils.getModelAndView;
+
 import com.learn.springmvc.facade.BookingFacade;
 import com.learn.springmvc.model.Event;
 import com.learn.springmvc.model.Ticket;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class TicketController {
 
   public static final String TICKET_MODEL = "ticketModel";
+  public static final String TICKET_PAGE = "ticketPage";
   private final BookingFacade bookingFacade;
 
   public TicketController(BookingFacade bookingFacade) {
@@ -30,13 +33,15 @@ public class TicketController {
   }
 
   @PostMapping("/newTicket")
-  public ResponseEntity<HttpStatus> bookTicket(@RequestParam long userId,
+  public ModelAndView bookTicket(@RequestParam long userId,
       @RequestParam long eventId,
       @RequestParam int place,
       @RequestParam String category) {
 
-    bookingFacade.bookTicket(userId, eventId, place, Utils.parseCategory(category));
-    return ResponseEntity.ok(HttpStatus.CREATED);
+    var modelAndView = getModelAndView(TICKET_PAGE);
+    var ticket = bookingFacade.bookTicket(userId, eventId, place, Utils.parseCategory(category));
+    modelAndView.addObject(TICKET_MODEL, "BOOKED " + ticket);
+    return modelAndView;
   }
 
   @GetMapping("/getByUser")
@@ -44,7 +49,7 @@ public class TicketController {
       @RequestParam(required = false, defaultValue = "25") int pageSize,
       @RequestParam(required = false, defaultValue = "1") int pageNum) {
 
-    var modelAndView = getModelAndView();
+    var modelAndView = getModelAndView(TICKET_PAGE);
     List<Ticket> tickets = bookingFacade.getBookedTickets(user, pageSize, pageNum);
     modelAndView.addObject(TICKET_MODEL, tickets);
     return modelAndView;
@@ -55,27 +60,16 @@ public class TicketController {
       @RequestParam(required = false, defaultValue = "25") int pageSize,
       @RequestParam(required = false, defaultValue = "1") int pageNum) {
 
-    var modelAndView = getModelAndView();
+    var modelAndView = getModelAndView(TICKET_PAGE);
     List<Ticket> tickets = bookingFacade.getBookedTickets(event, pageSize, pageNum);
     modelAndView.addObject(TICKET_MODEL, tickets);
     return modelAndView;
   }
 
   @DeleteMapping("/delete/{id}")
-  public ModelAndView cancelTicket(@PathVariable long id) {
+  public ResponseEntity<HttpStatus> cancelTicket(@PathVariable long id) {
 
-    var modelAndView = getModelAndView();
-    var isDeleted = bookingFacade.cancelTicket(id);
-    if (isDeleted) {
-      modelAndView.addObject(TICKET_MODEL, "Ticket id=" + id + " canceled successfully");
-    } else {
-      modelAndView.addObject(TICKET_MODEL, "Ticket id=" + id + " not found");
-    }
-
-    return modelAndView;
-  }
-
-  private ModelAndView getModelAndView() {
-    return new ModelAndView("ticketPage");
+    bookingFacade.cancelTicket(id);
+    return new ResponseEntity("CANCELED", HttpStatus.OK);
   }
 }
