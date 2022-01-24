@@ -18,25 +18,26 @@ public interface BookingFacade {
    */
   Event getEventById(long eventId);
 
-    /**
-     * Get list of events by matching title. Title is matched using 'contains' approach.
-     * In case nothing was found, empty list is returned.
-     * @param title Event title or it's part.
-     * @param pageSize Pagination param. Number of events to return on a page.
-     * @param pageNum Pagination param. Number of the page to return. Starts from 1.
-     * @return List of events.
-     */
-    List<Event> getEventsByTitle(String title, int pageSize, int pageNum);
+  /**
+   * Get list of events by matching title. Title is matched using 'contains' approach. In case nothing was found, empty
+   * list is returned.
+   *
+   * @param title    Event title or it's part.
+   * @param pageSize Pagination param. Number of events to return on a page.
+   * @param pageNum  Pagination param. Number of the page to return. Starts from 1.
+   * @return List of events.
+   */
+  List<Event> getEventsByTitle(String title, int pageSize, int pageNum);
 
-    /**
-     * Get list of events for specified day.
-     * In case nothing was found, empty list is returned.
-     * @param day Date object from which day information is extracted.
-     * @param pageSize Pagination param. Number of events to return on a page.
-     * @param pageNum Pagination param. Number of the page to return. Starts from 1.
-     * @return List of events.
-     */
-    List<Event> getEventsForDay(Date day, int pageSize, int pageNum);
+  /**
+   * Get list of events for specified day. In case nothing was found, empty list is returned.
+   *
+   * @param day      Date object from which day information is extracted.
+   * @param pageSize Pagination param. Number of events to return on a page.
+   * @param pageNum  Pagination param. Number of the page to return. Starts from 1.
+   * @return List of events.
+   */
+  List<Event> getEventsForDay(Date day, int pageSize, int pageNum);
 
   /**
    * Creates new event. Event id should be auto-generated.
@@ -79,15 +80,16 @@ public interface BookingFacade {
    */
   User getUserByEmail(String email);
 
-    /**
-     * Get list of users by matching name. Name is matched using 'contains' approach.
-     * In case nothing was found, empty list is returned.
-     * @param name Users name or it's part.
-     * @param pageSize Pagination param. Number of users to return on a page.
-     * @param pageNum Pagination param. Number of the page to return. Starts from 1.
-     * @return List of users.
-     */
-    List<User> getUsersByName(String name, int pageSize, int pageNum);
+  /**
+   * Get list of users by matching name. Name is matched using 'contains' approach. In case nothing was found, empty
+   * list is returned.
+   *
+   * @param name     Users name or it's part.
+   * @param pageSize Pagination param. Number of users to return on a page.
+   * @param pageNum  Pagination param. Number of the page to return. Starts from 1.
+   * @return List of users.
+   */
+  List<User> getUsersByName(String name, int pageSize, int pageNum);
 
   /**
    * Creates new user. User id should be auto-generated.
@@ -128,23 +130,25 @@ public interface BookingFacade {
    */
   Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category);
 
-    /**
-     * Get all booked tickets for specified user. Tickets should be sorted by event date in descending order.
-     * @param user User
-     * @param pageSize Pagination param. Number of tickets to return on a page.
-     * @param pageNum Pagination param. Number of the page to return. Starts from 1.
-     * @return List of Ticket objects.
-     */
-    List<Ticket> getBookedTickets(User user, int pageSize, int pageNum);
+  /**
+   * Get all booked tickets for specified user. Tickets should be sorted by event date in descending order.
+   *
+   * @param user     User
+   * @param pageSize Pagination param. Number of tickets to return on a page.
+   * @param pageNum  Pagination param. Number of the page to return. Starts from 1.
+   * @return List of Ticket objects.
+   */
+  List<Ticket> getBookedTickets(User user, int pageSize, int pageNum);
 
-    /**
-     * Get all booked tickets for specified event. Tickets should be sorted in by user email in ascending order.
-     * @param event Event
-     * @param pageSize Pagination param. Number of tickets to return on a page.
-     * @param pageNum Pagination param. Number of the page to return. Starts from 1.
-     * @return List of Ticket objects.
-     */
-    List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum);
+  /**
+   * Get all booked tickets for specified event. Tickets should be sorted in by user email in ascending order.
+   *
+   * @param event    Event
+   * @param pageSize Pagination param. Number of tickets to return on a page.
+   * @param pageNum  Pagination param. Number of the page to return. Starts from 1.
+   * @return List of Ticket objects.
+   */
+  List<Ticket> getBookedTickets(Event event, int pageSize, int pageNum);
 
   /**
    * Cancel ticket with a specified id.
