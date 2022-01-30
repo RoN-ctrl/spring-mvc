@@ -1,6 +1,7 @@
 package com.learn.springmvc.service.impl;
 
 import com.learn.springmvc.dao.impl.EventDao;
+import com.learn.springmvc.exception.EventNotFoundException;
 import com.learn.springmvc.model.Event;
 import com.learn.springmvc.model.impl.EventImpl;
 import com.learn.springmvc.service.EventService;
@@ -24,7 +25,7 @@ public class EventServiceImpl implements EventService {
 
   @Override
   public Event getById(long id) {
-    return eventDao.getById(id).orElseThrow();
+    return eventDao.getById(id).orElseThrow(() -> new EventNotFoundException("Event not found"));
   }
 
   @Override

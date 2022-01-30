@@ -1,6 +1,7 @@
 package com.learn.springmvc.service.impl;
 
 import com.learn.springmvc.dao.impl.UserDao;
+import com.learn.springmvc.exception.UserNotFoundException;
 import com.learn.springmvc.model.User;
 import com.learn.springmvc.model.impl.UserImpl;
 import com.learn.springmvc.service.UserService;
@@ -23,12 +24,12 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User getById(long id) {
-    return userDao.getById(id).orElseThrow();
+    return userDao.getById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
   }
 
   @Override
   public User getByEmail(String email) {
-    return userDao.getByEmail(email).orElseThrow();
+    return userDao.getByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
   }
 
   @Override
