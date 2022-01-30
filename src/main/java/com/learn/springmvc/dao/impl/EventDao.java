@@ -30,7 +30,7 @@ public class EventDao implements Dao<Event> {
   @SneakyThrows
   public void populateEvents() {
     List<String> eventsFromFile = Utils.readLines(filePath);
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     int indexForTitle = "title".length() + 1;
     int indexForDate = "date".length() + 1;
 
@@ -65,7 +65,7 @@ public class EventDao implements Dao<Event> {
 
   public List<Event> getByDay(Date day) {
     return events.values().stream()
-        .filter(e -> Objects.equals(day, e.getDate()))
+        .filter(e -> isDateDayEquals(day, e.getDate()))
         .collect(Collectors.toList());
   }
 
@@ -81,5 +81,10 @@ public class EventDao implements Dao<Event> {
     }
     events.remove(id);
     return !events.containsKey(id);
+  }
+
+  private boolean isDateDayEquals(Date date1, Date date2) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    return Objects.equals(dateFormat.format(date1), dateFormat.format(date2));
   }
 }

@@ -57,7 +57,7 @@ public class EventController {
   }
 
   @GetMapping("/getForDay/{day}")
-  public ModelAndView getEventForDay(@PathVariable @DateTimeFormat(pattern = "dd/MM/yyyy") Date day,
+  public ModelAndView getEventForDay(@PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") Date day,
       @RequestParam(required = false, defaultValue = "25") int pageSize,
       @RequestParam(required = false, defaultValue = "1") int pageNum) {
 
@@ -69,7 +69,7 @@ public class EventController {
 
   @PostMapping("/create")
   public ModelAndView createEvent(@RequestParam String title,
-      @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+      @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") Date date) {
 
     var modelAndView = getModelAndView(EVENT_PAGE);
     var event = bookingFacade.createEvent(title, date);
@@ -80,7 +80,7 @@ public class EventController {
   @PostMapping("/update/{id}")
   public ResponseEntity<HttpStatus> updateEvent(@PathVariable long id,
       @RequestParam String title,
-      @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+      @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") Date date) {
 
     var modelAndView = getModelAndView(EVENT_PAGE);
     var event = bookingFacade.updateEvent(id, title, date);

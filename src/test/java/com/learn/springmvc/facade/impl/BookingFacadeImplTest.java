@@ -25,13 +25,13 @@ class BookingFacadeImplTest {
   private static BookingFacade bookingFacade;
 
   private static final String EVENT_TITLE = "Giselle";
-  private static final String EVENT_DATE = "20/02/2021 18:00";
+  private static final String EVENT_DATE = "20-02-2021 18:00";
   private static final String USER_NAME = "Jack";
   private static final String USER_EMAIL = "jack@test.com";
   private static final int PLACE = 17;
   private static final int ZERO = 0;
 
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
   @BeforeAll
   static void beforeAll() {
@@ -81,7 +81,7 @@ class BookingFacadeImplTest {
   void updateEventTest() throws ParseException {
     Event event = createTestEvent();
     String updatedTitle = "Updated title";
-    String updatedDate = "10/02/2022 10:00";
+    String updatedDate = "10-02-2022 10:00";
     Event updatedEvent =
         bookingFacade.updateEvent(event.getId(), updatedTitle, DATE_FORMAT.parse(updatedDate));
 
