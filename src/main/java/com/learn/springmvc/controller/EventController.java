@@ -91,7 +91,7 @@ public class EventController {
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<HttpStatus> deleteEvent(@PathVariable long id) {
 
-    bookingFacade.deleteEvent(id);
-    return new ResponseEntity("DELETED", HttpStatus.OK);
+    boolean isDeleted = bookingFacade.deleteEvent(id);
+    return isDeleted ? new ResponseEntity("DELETED", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
   }
 }
