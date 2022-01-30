@@ -72,6 +72,9 @@ public class UserDao implements Dao<User> {
 
   @Override
   public boolean delete(long id) {
+    if (!users.containsKey(id)) {
+      return false;
+    }
     users.remove(id);
     return !users.containsKey(id);
   }

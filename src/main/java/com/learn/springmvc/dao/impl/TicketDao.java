@@ -77,6 +77,9 @@ public class TicketDao implements Dao<Ticket> {
 
   @Override
   public boolean delete(long id) {
+    if (!tickets.containsKey(id)) {
+      return false;
+    }
     tickets.remove(id);
     return !tickets.containsKey(id);
   }

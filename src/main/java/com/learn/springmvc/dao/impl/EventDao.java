@@ -76,6 +76,9 @@ public class EventDao implements Dao<Event> {
 
   @Override
   public boolean delete(long id) {
+    if (!events.containsKey(id)) {
+      return false;
+    }
     events.remove(id);
     return !events.containsKey(id);
   }
